@@ -1,0 +1,21 @@
+{
+  "name": "shop_app",
+  "version": "1.0.0",
+  "description": "A e-commerce based web application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "test-server": "nodemon app.js"
+  },
+  "author": "Shrill Shrestha",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.1.3",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
