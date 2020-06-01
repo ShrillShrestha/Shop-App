@@ -7,7 +7,12 @@ body{
     background-color: gray;
 }
 
-.error{
+.card-holder{
+    padding: 20px;
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cd{
+    margin: 10px;
 }

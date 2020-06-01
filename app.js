@@ -6,6 +6,7 @@ const path = require('path');
 //router modules
 const shopRoute = require('./routes/shop');
 const adminRoute = require('./routes/admin');
+const errorRoute = require('./controllers/error');
 
 //create server app
 const app = express();
@@ -20,12 +21,12 @@ app.set("views", "views");
 //set static file location to public folder
 app.use(express.static(path.join(__dirname, "public")));
 
+//routing function
 app.use('/admin', adminRoute);
 app.use('/', shopRoute);
 
-app.use((req, res, next)=>{
-    res.render('404.ejs', {pageTitle: 'Error!'});
-});
+//route to 404 error page
+app.get('*', errorRoute.get404);
 
 //server listening on port 3000
 app.listen(3000, ()=>{
