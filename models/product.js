@@ -29,7 +29,6 @@ module.exports = class Product{
     save(cb){
         getProductFromFile( products =>{
             if(products.length > 0){
-                console.log(products.length);
                 const updateList = [...products];
                 this.id = Math.random().toString();
                 updateList.push(this);
