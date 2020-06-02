@@ -19,7 +19,7 @@
                 <label for="description">Description</label>
                 <textarea class="form-control" id="description" rows="4" name="description"><%if(editing) { %><%= product.description %> <% } %></textarea>
             </div>
-            <input type="hidden" name="id" value="<% if(editing) { %> <%= product.id %> <% } %>">
+            <input type="hidden" name="id" value="<% if(editing) { %><%= product.id %><% } %>">
             <button type="submit" class="btn btn-primary">Submit</button>
         </form> 
     </div>

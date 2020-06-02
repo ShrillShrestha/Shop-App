@@ -28,10 +28,13 @@ module.exports = class Product{
 
     save(cb){
         getProductFromFile( products =>{
-            if(products.length > 0){
+            console.log("The is:", this.id);
+            if(this.id){
+                const index = products.findIndex((prod)=>{
+                    return prod.id === this.id
+                });
                 const updateList = [...products];
-                this.id = Math.random().toString();
-                updateList.push(this);
+                updateList[index] = this;
                 fs.writeFile(p, JSON.stringify(updateList), (err) =>{
                     if(err){
                         console.log("Couldn't write I!: ", err.message);
@@ -39,6 +42,7 @@ module.exports = class Product{
                     cb();
                 });
             }else{
+                console.log("Not Exists");
                 this.id = Math.random().toString();
                 products.push(this);
                 fs.writeFile(p, JSON.stringify(products), (err) =>{
