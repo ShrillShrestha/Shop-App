@@ -4,7 +4,7 @@ html, body{
 }
 
 body{
-    background-color: yellow;
+    background-color: gray;
 }
 
 .card-holder{
@@ -15,4 +15,16 @@ body{
 
 .cd{
     margin: 10px;
+}
+
+.text{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+   -webkit-line-clamp: 2; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+
+.fm-btn{
+    display: inline-block;
 }
