@@ -1,5 +1,15 @@
 <%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
-
+    <div class="container jb-hld">
+        <div class="jumbotron jb-det">
+            <h1 class="display-4"><%product.title%></h1>
+            <img class="lead" src="<%= product.imageUrl %>" alt="<%= product.title %>">
+            <p>$<%=product.price%></p>
+            <p><%=product.description%></p>
+            <p class="lead">
+              <a class="btn btn-primary btn-lg" href="#" role="button">Add to Cart</a>
+            </p>
+        </div>
+    </div>
 <%- include('../includes/footer.ejs') %>

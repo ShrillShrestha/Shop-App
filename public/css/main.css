@@ -28,3 +28,13 @@ body{
 .fm-btn{
     display: inline-block;
 }
+
+.jb-hld{
+    margin-top: 2em;
+}
+
+.jb-det{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

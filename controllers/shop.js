@@ -10,3 +10,14 @@ exports.getProducts =(req, res, next)=>{
         });
     });
 }
+
+exports.getDetailProduct = (req, res, next)=>{
+    Product.findById(req.params.productID, (prod)=>{
+        if(prod){
+            console.log(prod);
+            res.render('shop/product-detail', {pageTitle: prod.title, product: prod, admin: false})
+        }else{
+            res.redirect('/');
+        }
+    })
+}
