@@ -60,3 +60,26 @@ exports.getEditProduct = (req, res, next) =>{
         console.log(err)
     });
 }
+
+exports.postEditProduct = (req, res, next)=>{
+    const id = req.body.id;
+    const updateTitle = req.body.title;
+    const updateImageUrl = req.body.imageUrl;
+    const updatePrice = req.body.price;
+    const updateDescription = req.body.description;
+
+    Product.findByPk(id)
+    .then((product)=>{
+        product.title = updateTitle;
+        product.imageUrl = updateImageUrl;
+        product.price = updatePrice;
+        product.description = updateDescription;
+        return product.save();
+    })
+    .then((result)=>{
+        res.redirect('/admin?admin=true');
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+}
