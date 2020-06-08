@@ -62,7 +62,7 @@ exports.getEditProduct = (req, res, next) =>{
 }
 
 exports.postEditProduct = (req, res, next)=>{
-    const id = req.body.id;
+    const id = req.params.productID;
     const updateTitle = req.body.title;
     const updateImageUrl = req.body.imageUrl;
     const updatePrice = req.body.price;
@@ -82,4 +82,18 @@ exports.postEditProduct = (req, res, next)=>{
     .catch((err)=>{
         console.log(err);
     })
+}
+
+exports.deleteProduct = (req, res, next)=>{
+    Product.findByPk(req.params.productID)
+    .then((product)=>{
+
+        return product.destroy();
+    })
+    .then((result)=>{
+        res.redirect('/admin?admin=true');
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
 }
