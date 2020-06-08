@@ -1,7 +1,8 @@
 const Product = require('../models/product');
 
 exports.getProduct = (req, res, next)=>{
-    Product.fetchAll((products)=>{
+    Product.findAll()
+    .then((products)=>{
         res.render('products', {
             pageTitle: "Products-Admin",
             prods: products,
@@ -9,6 +10,9 @@ exports.getProduct = (req, res, next)=>{
             admin: req.query.admin
             });
     })
+    .catch((err)=>{
+        console.log(err);
+    });
 }
 
 exports.getAddProduct = (req, res, next)=>{
@@ -20,21 +24,27 @@ exports.getAddProduct = (req, res, next)=>{
 }
 
 exports.postAddProduct = (req, res, next)=>{
-    const id = req.body.id;
     const title = req.body.title;
     const imageUrl = req.body.imageUrl;
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product(id, title, imageUrl, price, description);
-    product.save(()=>{ 
-        res.redirect('/');
+    Product.create({
+        title: title,
+        price: price,
+        imageUrl: imageUrl,
+        description: description
+    }).then((result)=>{
+        res.redirect('/admin?admin=true');
+    }).catch((err)=>{
+        console.log(err);
     });
 }
 
 exports.getEditProduct = (req, res, next) =>{
     const productID = req.params.productID;
-    Product.findById(productID, (prod)=>{
+    Product.findByPk(productID)
+    .then((prod)=>{
         if(!prod){
             res.redirect('/');
         }else{
@@ -45,5 +55,8 @@ exports.getEditProduct = (req, res, next) =>{
             admin: req.query.admin
         });
         }
+    })
+    .catch((err)=>{
+        console.log(err)
     });
 }
