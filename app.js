@@ -14,6 +14,8 @@ const sequelize = require('./utils/datatbase');
 //import database modules
 const Product = require('./models/product');
 const User = require('./models/user');
+const Cart = require('./models/cart');
+const CartItem = require('./models/cart-item');
 
 const app = express();
 
@@ -33,15 +35,22 @@ app.use((req, res, next)=>{
     .catch((err)=>{
         console.log(err);
     })
-})
+});
 
 app.use('/admin', adminRoute);
 app.use('/', shopRoute);
 
 app.get('*', errorRoute.get404);
 
+//define relations between 
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Product);
+
+Cart.belongsTo(User);
+User.hasOne(Cart);
+
+Cart.belongsToMany(Product, { through : CartItem});
+Product.belongsToMany(Cart, { through: CartItem});
 
 //sync to database
 sequelize.sync()
@@ -54,8 +63,10 @@ sequelize.sync()
     }
     return user;
 })
-.then((result)=>{
-    console.log(result);
+.then((user)=>{
+    return user.createCart();  
+})
+.then((cart)=>{
     app.listen(3000, ()=>{
         console.log("Running in 3000!");
     });
@@ -63,5 +74,4 @@ sequelize.sync()
 .catch(err=>{
     console.log(err)
 });
-//server listening on port 3000
 

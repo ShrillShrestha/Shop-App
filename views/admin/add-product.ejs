@@ -1,7 +1,7 @@
 <%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
-    <div class="card-body">
+    <div class="card-body container">
         <form action="<%if(editing){%>/admin/edit-product/<%=product.id%><%}else{%>/admin/add-product<%}%>" method="POST">
             <div class="form-group">
               <label for="title">Title</label>
