@@ -71,7 +71,7 @@ exports.postCart = (req, res, next)=>{
         return Product.findByPk(req.params.productID);
     })
     .then((product)=>{
-        fetchedCart.addProduct(product, {
+        return fetchedCart.addProduct(product, {
             through : {quantity : newQuantity}
         });
     })
@@ -96,6 +96,52 @@ exports.postDeleteCartItem = (req, res, next) =>{
     })
     .then((result)=>{
         res.redirect('/cart');
+    })
+    .catch((err)=>{
+        console.log(err);
+    });
+};
+
+exports.getOrderItems = (req, res, next) => { //This method is simlar to getCart with a different implementation
+    req.user
+    .getOrders({include: Product})
+    .then(orders => {
+      res.render('shop/orders', {
+        path: '/orders',
+        pageTitle: 'Your Orders',
+        orders: orders,
+        admin:false
+      });
+    })
+    .catch(err => console.log(err));
+};
+
+exports.postOrder = (req, res, next) => {
+    let fetchedCart;
+    req.user.getCart()
+    .then((cart)=>{
+        fetchedCart = cart;
+        return cart.getProducts();
+    })
+    .then((products)=>{
+        return req.user.createOrder()
+        .then((order)=>{
+            return order.addProducts(products.map((product)=>{
+                    product.orderItem = { quantity : product.cartItem.quantity};
+                    return product;
+                })
+            );
+        })
+        .catch((err)=>{
+            console.log(err);
+        });
+    })
+    .then((result)=>{
+        return fetchedCart.setProducts(null);
+    })
+    .then((result)=>{
+        console.log("Posted!!!!---------------------------------------");
+        res.redirect('/orders');
     })
     .catch((err)=>{
         console.log(err);

@@ -1,21 +1,32 @@
 <%- include('../includes/header.ejs') %>
 <body>
     <%- include('../includes/navigation.ejs') %>
-    <div class="list-group container" id = "ct-lt">
-        <%prods.forEach((product)=> {%>
-            <div class = "cart-list list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                    <a href="/details/<%=product.id%>">
-                        <h5><%=product.title%></h5>
-                    </a>
-                    <small>Count: <%=product.cartItem.quantity%></small>
+    <%if(prods.length > 0) {%>
+        <div class="list-group container" id = "ct-lt">
+            <%prods.forEach((product)=> {%>
+                <div class = "cart-list list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                        <a href="/details/<%=product.id%>">
+                            <h5><%=product.title%></h5>
+                        </a>
+                        <small>Count: <%=product.cartItem.quantity%></small>
+                    </div>
+                    <p class="mb-1 text"><%=product.description%></p>
+                    <small>Price: $<%=product.price%> per each</small>
+                    <form class="fm-btn float-right" action="/delete-cart-product/<%=product.id%>" method="POST">
+                        <button class="card-link btn btn-primary" type="submit">Delete</button>
+                    </form>
                 </div>
-                <p class="mb-1 text"><%=product.description%></p>
-                <small>Price: $<%=product.price%> per each</small>
-                <form class="fm-btn float-right" action="/delete-cart-product/<%=product.id%>" method="POST">
-                    <button class="card-link btn btn-primary" type="submit">Delete</button>
+            <%});%>
+            <div class="d-flex justify-content-center top-spc">
+                <form action="/create-order" method="POST">
+                    <button type="submit" class="btn btn-primary">Order Now!</button>
                 </form>
             </div>
-        <%});%>
-    </div>
+        </div>
+    <%}else{%>
+        <div class="d-flex justify-content-center top-spc">
+            <h1>Cart is Empty!</h1>
+        </div>
+    <%}%>
 <%- include('../includes/footer.ejs') %>

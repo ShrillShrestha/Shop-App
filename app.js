@@ -16,6 +16,8 @@ const Product = require('./models/product');
 const User = require('./models/user');
 const Cart = require('./models/cart');
 const CartItem = require('./models/cart-item');
+const Order = require('./models/order');
+const OrderItem = require('./models/order-item');
 
 const app = express();
 
@@ -42,15 +44,21 @@ app.use('/', shopRoute);
 
 app.get('*', errorRoute.get404);
 
-//define relations between 
+//define relations between-(For practice, there are redundent lines of code)
 Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Product);
 
 Cart.belongsTo(User);
 User.hasOne(Cart);
 
-Cart.belongsToMany(Product, { through : CartItem});
+Cart.belongsToMany(Product, { through : CartItem });
 Product.belongsToMany(Cart, { through: CartItem});
+
+Order.belongsTo(User);
+User.hasMany(Order);
+
+Product.belongsToMany(Order, { through: OrderItem });
+Order.belongsToMany(Product, { through: OrderItem });
 
 //sync to database
 sequelize.sync()
