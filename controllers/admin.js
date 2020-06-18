@@ -1,7 +1,10 @@
 const Product = require('../models/product');
+const mongoose = require('mongoose');
+
+const ObjectId = mongoose.Types.ObjectId;
 
 exports.getProduct = (req, res, next)=>{
-    req.user.getProducts()
+    Product.find({userID: ObjectId(req.user._id)})
     .then((products)=>{
         res.render('products', {
             pageTitle: "Products-Admin",
@@ -29,12 +32,8 @@ exports.postAddProduct = (req, res, next)=>{
     const price = req.body.price;
     const description = req.body.description;
 
-    req.user.createProduct({
-        title: title,
-        price: price,
-        imageUrl: imageUrl,
-        description: description
-    })
+    const product = new Product({title: title, price: price, imageUrl: imageUrl, description:description, userID: req.user._id});
+    product.save()
     .then((result)=>{
         res.redirect('/admin?admin=true');
     })
@@ -45,9 +44,8 @@ exports.postAddProduct = (req, res, next)=>{
 
 exports.getEditProduct = (req, res, next) =>{
     const productID = req.params.productID;
-    req.user.getProducts({where: {id : productID} })
-    .then((prods)=>{
-        const prod = prods[0];
+    Product.findById(productID)
+    .then((prod)=>{
         if(!prod){
             res.redirect('/');
         }else{
@@ -71,7 +69,7 @@ exports.postEditProduct = (req, res, next)=>{
     const updatePrice = req.body.price;
     const updateDescription = req.body.description;
 
-    Product.findByPk(id)
+    Product.findById(id)
     .then((product)=>{
         product.title = updateTitle;
         product.imageUrl = updateImageUrl;
@@ -88,11 +86,7 @@ exports.postEditProduct = (req, res, next)=>{
 };
 
 exports.deleteProduct = (req, res, next)=>{
-    Product.findByPk(req.params.productID)
-    .then((product)=>{
-
-        return product.destroy();
-    })
+    Product.findByIdAndRemove(req.params.productID)
     .then((result)=>{
         res.redirect('/admin?admin=true');
     })

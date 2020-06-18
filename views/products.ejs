@@ -10,10 +10,10 @@
                       <h5 class="card-title"><%= product.title %></h5>
                       <p class="card-text text"><%= product.description %></p>
                       <h6 class="card-subtitle mb-2 text-muted">$ <%= product.price %></h6>
-                      <form class="fm-btn" action="<%if(path === '/admin') { %>/admin/delete/<% } else {%>/add-cart/<% } %><%=product.id%>" method="POST">
+                      <form class="fm-btn" action="<%if(path === '/admin') { %>/admin/delete/<% } else {%>/add-cart/<% } %><%=product._id%>" method="POST">
                         <button class="card-link btn btn-primary" type="submit"> <%if(path === "/admin") { %> Delete <% }else{ %> Add to Cart <% } %></button> 
                       </form>        
-                      <a href="<%if(path === '/admin'){%>/admin/edit-product/<%}else{%>/details/<%}%><%=product.id%><%if(path === '/admin'){%>?admin=true<%}%>"
+                      <a href="<%if(path === '/admin'){%>/admin/edit-product/<%}else{%>/details/<%}%><%=product._id%><%if(path === '/admin'){%>?admin=true<%}%>"
                          class="card-link btn btn-primary"><%if(path === "/admin") { %> Edit <% }else{ %> Detail <% } %></a>
                     </div>
                 </div>

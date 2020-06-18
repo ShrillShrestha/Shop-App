@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const mongoose = require('mongoose');
 require('dotenv').config()
 
 //router route modules
@@ -8,16 +9,7 @@ const shopRoute = require('./routes/shop');
 const adminRoute = require('./routes/admin');
 const errorRoute = require('./controllers/error');
 
-//import database configuration
-const sequelize = require('./utils/datatbase');
-
-//import database modules
-const Product = require('./models/product');
 const User = require('./models/user');
-const Cart = require('./models/cart');
-const CartItem = require('./models/cart-item');
-const Order = require('./models/order');
-const OrderItem = require('./models/order-item');
 
 const app = express();
 
@@ -29,12 +21,12 @@ app.set("views", "views");
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use((req, res, next)=>{
-    User.findByPk(1)
-    .then((user)=>{
-        req.user = user;
+    User.find()
+    .then(users=>{
+        req.user = users[0];
         next();
     })
-    .catch((err)=>{
+    .catch(err=>{
         console.log(err);
     })
 });
@@ -44,42 +36,26 @@ app.use('/', shopRoute);
 
 app.get('*', errorRoute.get404);
 
-//define relations between-(For practice, there are redundent lines of code)
-Product.belongsTo(User, { constraints: true, onDelete: 'CASCADE'});
-User.hasMany(Product);
-
-Cart.belongsTo(User);
-User.hasOne(Cart);
-
-Cart.belongsToMany(Product, { through : CartItem });
-Product.belongsToMany(Cart, { through: CartItem});
-
-Order.belongsTo(User);
-User.hasMany(Order);
-
-Product.belongsToMany(Order, { through: OrderItem });
-Order.belongsToMany(Product, { through: OrderItem });
-
-//sync to database
-sequelize.sync()
-.then(result =>{
-    return User.findByPk(1)
+const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0-3spkw.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
+.then(connect =>{
+    return User.find();
 })
-.then((user)=>{
-    if(!user){
-        return User.create({name: 'Shrill', email: 'test@gmail.com'});
+.then(result=>{
+    if(result.length === 0){
+        const user = new User({
+            name: "Test",
+            email: "test@test.com",
+            cart:{
+                items:[]
+            }
+        });
+        return user.save();
     }
-    return user;
 })
-.then((user)=>{
-    return user.createCart();  
+.then(usr=>{
+    app.listen(3000);
 })
-.then((cart)=>{
-    app.listen(3000, ()=>{
-        console.log("Running in 3000!");
-    });
+.catch(err =>{
+    console.log(err);
 })
-.catch(err=>{
-    console.log(err)
-});
-

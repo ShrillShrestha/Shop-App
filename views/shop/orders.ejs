@@ -4,18 +4,18 @@
     <%if(orders.length > 0) {%>
         <%orders.forEach((order) => { %>
             <div class="list-group container" id = "ct-lt">
-                <p class="h3 hd-ord">Order No. <%=order.id%></p>
-                <%order.products.forEach((product)=> {%>
+                <p class="h3 hd-ord">Order No. <%=order._id%></p>
+                <%order.products.forEach((p)=> {%>
                     <div class = "cart-list list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
-                            <a href="/details/<%=product.id%>">
-                                <h5><%=product.title%></h5>
+                            <a href="/details/<%=p.product._id%>">
+                                <h5><%=p.product.title%></h5>
                             </a>
-                            <small>Count: <%=product.orderItem.quantity%></small>
+                            <small>Count: <%=p.quantity%></small>
                         </div>
-                        <p class="mb-1 text"><%=product.description%></p>
-                        <small>Price: $<%=product.price%> per each</small>
-                        <form class="fm-btn float-right" action="/return/<%=product.id%>" method="POST">
+                        <p class="mb-1 text"><%=p.product.description%></p>
+                        <small>Price: $<%=p.product.price%> per each</small>
+                        <form class="fm-btn float-right" action="/return/<%=p.product._id%>" method="POST">
                             <button class="card-link btn btn-primary" type="submit">Return</button>
                         </form>
                     </div>
