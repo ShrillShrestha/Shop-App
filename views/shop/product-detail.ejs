@@ -8,7 +8,9 @@
             <p>$<%=product.price%></p>
             <p><%=product.description%></p>
             <p class="lead">
-              <a class="btn btn-primary btn-lg" href="#" role="button">Add to Cart</a>
+                <form action="/add-cart/<%=product._id%>" method="POST">
+                    <button class="btn btn-primary btn-lg" href="" role="button">Add to Cart</button>
+                </form>
             </p>
         </div>
     </div>

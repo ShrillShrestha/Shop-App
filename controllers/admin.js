@@ -10,7 +10,8 @@ exports.getProduct = (req, res, next)=>{
             pageTitle: "Products-Admin",
             prods: products,
             path: '/admin',
-            admin: req.query.admin
+            admin: req.query.admin,
+            isAuth: req.session.isLoggedin
             });
     })
     .catch((err)=>{
@@ -22,7 +23,8 @@ exports.getAddProduct = (req, res, next)=>{
     res.render('admin/add-product', {
         pageTitle: "Add Product", 
         editing: false,
-        admin: req.query.admin
+        admin: req.query.admin,
+        isAuth: req.session.isLoggedin
     });
 };
 
@@ -53,7 +55,8 @@ exports.getEditProduct = (req, res, next) =>{
             pageTitle: 'Edit Product', 
             editing: true, 
             product: prod,
-            admin: req.query.admin
+            admin: req.query.admin,
+            isAuth: req.session.isLoggedin
         });
         }
     })

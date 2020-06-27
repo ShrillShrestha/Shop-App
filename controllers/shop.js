@@ -8,7 +8,8 @@ exports.getProducts =(req, res, next)=>{
             pageTitle: 'Products',
             prods:products,
             path: '/',
-            admin: false
+            admin: false,
+            isAuth: req.session.isLoggedin
         });
     })
     .catch((err)=>{
@@ -23,7 +24,8 @@ exports.getDetailProduct = (req, res, next)=>{
             res.render('shop/product-detail', {
                 pageTitle: prod.title,
                 product: prod,
-                admin: false
+                admin: false,
+                isAuth: req.session.isLoggedin
             });
         }else{
             res.redirect('/');
@@ -50,7 +52,8 @@ exports.getProductCart = (req, res, next)=>{
         res.render('shop/cart',{
             pageTitle: 'Cart',
             prods: products,
-            admin: false
+            admin: false,
+            isAuth: req.session.isLoggedin
         });
     })
     .catch((err)=>{
@@ -88,7 +91,8 @@ exports.getOrderItems = (req, res, next) => {
         path: '/orders',
         pageTitle: 'Your Orders',
         orders: orders,
-        admin:false
+        admin:false,
+        isAuth: req.session.isLoggedin
       });
     })
     .catch(err => console.log(err));

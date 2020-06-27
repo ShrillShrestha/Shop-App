@@ -5,7 +5,7 @@
     </a>
     <div class="collapse navbar-collapse d-flex flex-row-reverse" id="navbarNav">
         <ul class="navbar-nav">
-          <% if(admin) {%>
+          <% if(admin && isAuth) {%>
             <li class="nav-item active">
               <a class="nav-link" href="/admin?admin=true">Overview <span class="sr-only">(current)</span></a>
             </li>
@@ -15,7 +15,7 @@
             <li class="nav-item">
               <a class="nav-link" href="/summary"> Summary </a>
             </li>
-          <% }else{ %>
+          <% }else if (isAuth){ %>
             <li class="nav-item active">
               <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             </li>
@@ -26,9 +26,18 @@
               <a class="nav-link" href="/cart">Cart</a>
             </li>
           <% } %>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
+          <% if(!isAuth){ %>
+            <li class="nav-item">
+              <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+            </li>
+          <%} else{ %>
+            <form action="/logout" method='POST'>
+              <button class="btn nav-link" type="submit">Logout</button>
+            </form>
+          <% } %>
         </ul>
       </div>
 </nav>
